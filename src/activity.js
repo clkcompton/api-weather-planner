@@ -1,25 +1,88 @@
-const express = require('express');
+const fetch = require('node-fetch');
 
-function createRouter(db) {
-  const router = express.Router();
-  const activity = '';
+// async function getActivitiesByUserId(db, req, weekForecast) {
+//   await db.query(
+//     'SELECT activity_name, max_temperature, min_temperature, weather_description FROM activity WHERE user_id=?',
+//     [req.params.id],
+//     (error, results) => {
+//       if (error) {
+//         console.log(error);
+//         // throw 'Parameter is not a number!';
+//       }
 
-  router.post('/newActivity', (req, res, next) => {
-    db.query(
-      'INSERT INTO activity (activity_name, max_temperature, min_temperature) VALUES (?,?,?)',
-      [req.body.activity_name, req.body.max_temperature, req.body.min_temperature],
-      (error) => {
-        if (error) {
-          console.error(error);
-          res.status(500).json({status: 'error'});
-        } else {
-          res.status(200).json({status: 'ok'});
-        }
-      }
-    );
-  });
+//       const activityForecastCollection = results.map(activity => {
+//         return {
+//           ...activity,
+//           activityForecast: weekForecast.map( dayForecast => {
+//             return compareUserAndWeatherData(activity, dayForecast)
+//            })
+//         }
+//       })
 
-  return router;
+//       return activityForecastCollection;
+//     }
+//   );
+// }
+
+function getActivityForecast(activity, weekForecast) {
+
+  let comparisons = {};
+
+  for (let i = 0; i < weekForecast.length; i++) {
+    comparisons[weekForecast[i].dayOfWeek] = compareUserAndWeatherData(activity, weekForecast[i])
+  }
+  console.log("comparisons: ", comparisons);
+  return comparisons;
 }
 
-module.exports = createRouter;
+
+
+
+function compareUserAndWeatherData(activity, dayForecast) {
+
+  let isMaxTempInBounds;
+  let isMinTempInBounds;
+  let doesDescriptionMatch;
+  let isInBounds;
+
+  let comparisonResultsObj;
+
+  if (dayForecast.maxTemp <= activity.max_temperature) {
+    isMaxTempInBounds = true;
+  } else {
+    isMaxTempInBounds = false;
+  }
+
+  if (dayForecast.minTemp >= activity.min_temperature) {
+    isMinTempInBounds = true;
+  } else {
+    isMinTempInBounds = false;
+  }
+
+  if (activity.weather_description === dayForecast.weatherDescription) {
+    doesDescriptionMatch = true;
+  } else {
+    doesDescriptionMatch = false;
+  }
+
+  if (isMaxTempInBounds && isMinTempInBounds && doesDescriptionMatch) {
+    isInBounds = true;
+  } else {
+    isInBounds = false;
+  }
+
+  comparisonResultsObj = {
+      isMaxTempInBounds, 
+      isMinTempInBounds,
+      doesDescriptionMatch,
+      isInBounds
+    }
+
+
+  // console.log(comparisonResultsObj);
+  return comparisonResultsObj;
+
+}
+
+module.exports = compareUserAndWeatherData;
+module.exports = getActivityForecast;
