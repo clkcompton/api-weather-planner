@@ -1,6 +1,6 @@
 # Weather Planner API
 
-#### Description
+### Description
 Calls to the weather API and provides CRUD functionality in connection with the mysql database.
 
 Please note, this project was built to function with the [ui-weather-planner repository](https://github.com/clkcompton/ui-weather-planner.git).
@@ -8,7 +8,9 @@ Please note, this project was built to function with the [ui-weather-planner rep
 <br>
 
 ### Project Architecture
-<img width="703" alt="Project Architecture" src="https://user-images.githubusercontent.com/74030805/116930708-b5df2680-ac25-11eb-9ab2-fb1a9a2b720b.png">
+<img width="300" alt="Project Architecture" src="https://user-images.githubusercontent.com/74030805/116930708-b5df2680-ac25-11eb-9ab2-fb1a9a2b720b.png">
+
+<br>
 
 ### Project Setup
 * Through Open Weather, request the [free One Call API key](https://openweathermap.org/full-price#current)
@@ -55,5 +57,5 @@ Activity Table Foriegn Key Settings:
 
 <br>
 
-**Notes**
-* endpoints are located in the endpointCollection.js file
+### Notes
+* Endpoints are located in the endpointCollection.js file
