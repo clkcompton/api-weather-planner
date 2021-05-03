@@ -27,7 +27,7 @@ Under "Users and Privileges" in the Administration tab, create a new account nam
 <img src="https://user-images.githubusercontent.com/74030805/116909478-e0bb8180-ac09-11eb-8f69-9d1f476b1486.png" width="300">
 
 
-The MySQL database is linked to the project in the service.js file:
+The MySQL database is linked to the project in the service.js file: 
 ```
 const connection = mysql.createConnection({
   host     : 'localhost',
@@ -40,13 +40,13 @@ The password can be changed in this file and under the account details in "Users
 
 The below images show the settings/structure of the user and activity tables.
 
-User Table Settings:
+User Table Settings:  
 <img src="https://user-images.githubusercontent.com/74030805/116908354-6807f580-ac08-11eb-8822-e6a62f5d6a80.png" width="300">
 
-Activity Table Settings:
+Activity Table Settings:  
 <img src="https://user-images.githubusercontent.com/74030805/116908363-6b9b7c80-ac08-11eb-8c26-2db78c31defc.png" width="300">
 
-Activity Table Foriegn Key Settings:
+Activity Table Foriegn Key Settings:  
 <img src="https://user-images.githubusercontent.com/74030805/116908289-532b6200-ac08-11eb-82fe-0327300086e2.png" width="300">
 
 
