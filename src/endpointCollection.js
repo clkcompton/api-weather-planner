@@ -19,6 +19,8 @@ function createRouter(db) {
 
   router.get('/get-activities-by-user-id/:id', async function (req, res, next) {
 
+
+    console.log("HERE: ", req.params.id)
     const weekForecast = await getForecast();
       // console.log("FORECAST: ", weekForecast);
 
@@ -127,7 +129,7 @@ function createRouter(db) {
           console.log(error);
           res.status(500).json({status: 'error'});
         } else {
-          res.status(200).json(results);
+          res.status(200).json(results[0]);
         }
       }
     );
