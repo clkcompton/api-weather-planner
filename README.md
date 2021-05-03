@@ -5,29 +5,31 @@ Calls to the weather API and provides CRUD functionality in connection with the 
 
 Please note, this project was built to function with the [ui-weather-planner repository](https://github.com/clkcompton/ui-weather-planner.git).
 
+<br>
+
 **Project Setup**
-* Through Open Weather, request the [free One Call API key](https://openweathermap.org/full-price#current) (further instructions to come)
+* Through Open Weather, request the [free One Call API key](https://openweathermap.org/full-price#current)
 * Install global dependencies. These are the global dependencies I used along with the recommended versions:
   * npm@7.10.0
   * nodemon@2.0.7
 * Create mysql database with two tables, `user` and `activity`; Further instructions and queries located in "Database Creation" section below
 * Run `npm i` within the project directory to install project dependencies
-* Run application with npm run start
+* Run application with `npm run start`
 
+<br>
 
-**Database Creation**
+### Database Creation
 Note: These instructions assume that you already have [MySQL](https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/osx-installation.html) and [MySQL Workbench](https://www.mysql.com/products/workbench/) installed and working.
 
-Create a new MySQL database called "weather-planner".
-
-Under "Users and Privileges" in the Administration tab, create a new account named "weather" with the password set to "password" and "Limit to Hosts Matching" set to "localhost". Be sure to set Schema Privilages to "All".
+1. Create a new MySQL database called "weather-planner".
+1. Under "Users and Privileges" in the Administration tab, create a new account named "weather" with the password set to "password" and "Limit to Hosts Matching" set to "localhost". Be sure to set Schema Privilages to "All".
 
 <img src="https://user-images.githubusercontent.com/74030805/116909494-e44f0880-ac09-11eb-9089-58531c74b752.png" width="300">
 
 <img src="https://user-images.githubusercontent.com/74030805/116909478-e0bb8180-ac09-11eb-8f69-9d1f476b1486.png" width="300">
 
 
-The MySQL database is linked to the project in the service.js file: 
+1. (optional) Change the user password to a more secure password. Change the password in the project's service.js file where the MySQL database is linked to the project.  Then, in Workbench, navigate to 'account details>Users and Privileges>weather' and change the weather user's password to reflect the new password is service.js.
 ```
 const connection = mysql.createConnection({
   host     : 'localhost',
@@ -36,9 +38,8 @@ const connection = mysql.createConnection({
   database : 'weather-planner'
 });
 ```
-The password can be changed in this file and under the account details in "Users and Privileges"
 
-The below images show the settings/structure of the user and activity tables.
+1. Create the user and activity tables in Workbench. The below images show the settings/structure of the tables.
 
 User Table Settings:  
 <img src="https://user-images.githubusercontent.com/74030805/116908354-6807f580-ac08-11eb-8822-e6a62f5d6a80.png" width="300">
@@ -49,7 +50,7 @@ Activity Table Settings:
 Activity Table Foriegn Key Settings:  
 <img src="https://user-images.githubusercontent.com/74030805/116908289-532b6200-ac08-11eb-82fe-0327300086e2.png" width="300">
 
-
+<br>
 
 **Notes**
 * endpoints are located in the endpointCollection.js file
