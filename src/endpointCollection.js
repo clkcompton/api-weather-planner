@@ -9,6 +9,8 @@ function createRouter(db) {
   const router = express.Router();
   // const username = '';
 
+
+  //calls getForecast() in weather-service.js
   router.get('/weather', async function (req, res, next) {
     const forecast = await getForecast();
 
@@ -16,21 +18,18 @@ function createRouter(db) {
   });
 
 
-
   router.get('/get-activities-by-user-id/:id', async function (req, res, next) {
 
 
-    console.log("HERE: ", req.params.id)
+    // console.log("HERE: ", req.params.id)
     const weekForecast = await getForecast();
-      // console.log("FORECAST: ", weekForecast);
 
       db.query(
-          'SELECT activity_name, max_temperature, min_temperature, weather_description FROM activity WHERE user_id=?',
+          'SELECT id_activity, activity_name, max_temperature, min_temperature, weather_description FROM activity WHERE user_id=?',
           [req.params.id],
           (error, results) => {
             if (error) {
               console.log(error);
-              // throw 'Parameter is not a number!';
             }
       
             const activityForecastCollection = results.map(activity => {
@@ -84,6 +83,37 @@ function createRouter(db) {
     );
   });
 
+
+  router.delete('/delete_activity/:id_activity', function (req, res, next) {
+    db.query(
+      'DELETE FROM activity WHERE id_activity=?',
+      [req.params.id_activity],
+      (error) => {
+        if (error) {
+          res.status(500).json({status: 'error'});
+        } else {
+          res.status(200).json({status: 'ok'});
+        }
+      }
+    );
+  });
+
+
+  router.put('/update-activity/:id_activity', function (req, res, next) {
+    db.query(
+      'UPDATE activity SET max_temperature=?, min_temperature=?, weather_description=? WHERE id_activity=?',
+      [req.body.max_temperature, req.body.min_temperature, req.body.weather_description, req.params.id_activity],
+      (error) => {
+        if (error) {
+          res.status(500).json({status: 'error'});
+        } else {
+          res.status(200).json({status: 'ok'});
+        }
+      }
+    );
+  });
+
+  
   router.post('/user', (req, res, next) => {
     db.query(
       'INSERT INTO user (username, password) VALUES (?,?)',

@@ -79,7 +79,6 @@ function compareUserAndWeatherData(activity, dayForecast) {
     }
 
 
-  // console.log(comparisonResultsObj);
   return comparisonResultsObj;
 
 }
