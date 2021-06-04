@@ -2,9 +2,8 @@ require('dotenv').config();
 
 const fetch = require('node-fetch');
 
+//calls open weather api, gets forecast for the upcoming week, and formats result
 async function getForecast() {
-
-  // console.log("KEY HERE:" + process.env.WEATHER_API_KEY);
 
   const response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=38.62&lon=-90.19&exclude=hourly,minutely,current,alerts&units=imperial&appid=${process.env.WEATHER_API_KEY}`);
   const body = await response.json();
@@ -17,7 +16,7 @@ async function getForecast() {
       weatherDescription: day.weather[0].main,
       imageCode: day.weather[0].id
     }});
-  // console.log(result);
+
   result.pop();
   return result;
 }

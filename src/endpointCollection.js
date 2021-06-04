@@ -7,7 +7,6 @@ const express = require('express');
 
 function createRouter(db) {
   const router = express.Router();
-  // const username = '';
 
 
   //calls getForecast() in weather-service.js
@@ -18,10 +17,8 @@ function createRouter(db) {
   });
 
 
+  //gets each day's weather comparisons
   router.get('/get-activities-by-user-id/:id', async function (req, res, next) {
-
-
-    // console.log("HERE: ", req.params.id)
     const weekForecast = await getForecast();
 
       db.query(
@@ -48,31 +45,13 @@ function createRouter(db) {
         );
   });
 
-
-
-  // router.get('/get-activities-by-user-id/:id', function (req, res, next) {
-  //   db.query(
-  //     'SELECT activity_name, max_temperature, min_temperature, weather_description FROM activity WHERE user_id=?',
-  //     [req.params.id],
-  //     (error, results) => {
-  //       // console.log(req.params);
-  //       // console.log(results);
-  //       if (error) {
-  //         console.log(error);
-  //         res.status(500).json({status: 'error'});
-  //       } else {
-  //         res.status(200).json(results);
-  //       }
-  //     }
-  //   );
-  // });
   
+  //add new activity
   router.post('/addActivity', (req, res, next) => {
     db.query(
       'INSERT INTO activity (activity_name, max_temperature, min_temperature, weather_description, user_id) VALUES (?,?,?,?,?)',
       [req.body.activity_name, req.body.max_temperature, req.body.min_temperature, req.body.weather_description, req.body.user_id],
       (error) => {
-        console.log(req.body)
         if (error) {
           console.error(error);
           res.status(500).json({status: 'error'});
@@ -84,6 +63,7 @@ function createRouter(db) {
   });
 
 
+  //delete activity
   router.delete('/delete_activity/:id_activity', function (req, res, next) {
     db.query(
       'DELETE FROM activity WHERE id_activity=?',
@@ -99,6 +79,7 @@ function createRouter(db) {
   });
 
 
+  //edit activity
   router.put('/update-activity/:id_activity', function (req, res, next) {
     db.query(
       'UPDATE activity SET max_temperature=?, min_temperature=?, weather_description=? WHERE id_activity=?',
@@ -114,12 +95,13 @@ function createRouter(db) {
   });
 
   
+  //register user
   router.post('/user', (req, res, next) => {
     db.query(
       'INSERT INTO user (username, password) VALUES (?,?)',
       [req.body.username, req.body.password],
       (error) => {
-        console.log(req.body)
+        // console.log(req.body)
         if (error) {
           console.error(error);
           res.status(500).json({status: 'error'});
@@ -130,14 +112,15 @@ function createRouter(db) {
     );
   });
 
+
   //for user login
   router.get('/login-user/:username', function (req, res, next) {
     db.query(
       'SELECT id, password FROM user WHERE username=?',
       [req.params.username],
       (error, results) => {
-        console.log(req.params);
-        console.log(results);
+        // console.log(req.params);
+        // console.log(results);
         if (error) {
           console.log(error);
           res.status(500).json({status: 'error'});
@@ -148,13 +131,15 @@ function createRouter(db) {
     );
   });
 
+
+  //used to get id and password from current user
   router.get('/check-for-user/:username', function (req, res, next) {
     db.query(
       'SELECT id, password FROM user WHERE username=?',
       [req.params.username],
       (error, results) => {
-        console.log(req.params);
-        console.log(results);
+        // console.log(req.params);
+        // console.log(results);
         if (error) {
           console.log(error);
           res.status(500).json({status: 'error'});
@@ -165,20 +150,8 @@ function createRouter(db) {
     );
   });
 
-  router.put('/user/:id', function (req, res, next) {
-    db.query(
-      'UPDATE user SET password=? WHERE id=?',
-      [req.body.password, req.params.id],
-      (error) => {
-        if (error) {
-          res.status(500).json({status: 'error'});
-        } else {
-          res.status(200).json({status: 'ok'});
-        }
-      }
-    );
-  });
 
+  //update password
   router.put('/update-password-by-username/:username', function (req, res, next) {
     db.query(
       'UPDATE user SET password=? WHERE username=?',
@@ -193,10 +166,28 @@ function createRouter(db) {
     );
   });
 
+
+  //delete user; not currently in use
   router.delete('/user/:username', function (req, res, next) {
     db.query(
       'DELETE FROM user WHERE username=?',
       [req.params.username],
+      (error) => {
+        if (error) {
+          res.status(500).json({status: 'error'});
+        } else {
+          res.status(200).json({status: 'ok'});
+        }
+      }
+    );
+  });
+
+
+  //update password by id; not currently in use
+  router.put('/user/:id', function (req, res, next) {
+    db.query(
+      'UPDATE user SET password=? WHERE id=?',
+      [req.body.password, req.params.id],
       (error) => {
         if (error) {
           res.status(500).json({status: 'error'});

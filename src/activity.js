@@ -1,29 +1,7 @@
 const fetch = require('node-fetch');
 
-// async function getActivitiesByUserId(db, req, weekForecast) {
-//   await db.query(
-//     'SELECT activity_name, max_temperature, min_temperature, weather_description FROM activity WHERE user_id=?',
-//     [req.params.id],
-//     (error, results) => {
-//       if (error) {
-//         console.log(error);
-//         // throw 'Parameter is not a number!';
-//       }
 
-//       const activityForecastCollection = results.map(activity => {
-//         return {
-//           ...activity,
-//           activityForecast: weekForecast.map( dayForecast => {
-//             return compareUserAndWeatherData(activity, dayForecast)
-//            })
-//         }
-//       })
-
-//       return activityForecastCollection;
-//     }
-//   );
-// }
-
+//iterates through each weekday's forecast and compares the forecast to the user's preferences. Returns boolean for whether or not the forecast meets the user's preferences
 function getActivityForecast(activity, weekForecast) {
 
   let comparisons = {};
@@ -31,13 +9,13 @@ function getActivityForecast(activity, weekForecast) {
   for (let i = 0; i < weekForecast.length; i++) {
     comparisons[weekForecast[i].dayOfWeek] = compareUserAndWeatherData(activity, weekForecast[i])
   }
-  console.log("comparisons: ", comparisons);
+
   return comparisons;
 }
 
 
 
-
+//makes the comparisons between the weeday's forecast and the user's preferences
 function compareUserAndWeatherData(activity, dayForecast) {
 
   let isMaxTempInBounds;
@@ -77,7 +55,6 @@ function compareUserAndWeatherData(activity, dayForecast) {
       doesDescriptionMatch,
       isInBounds
     }
-
 
   return comparisonResultsObj;
 
